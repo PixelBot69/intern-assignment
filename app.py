@@ -1,19 +1,16 @@
 from flask import Flask, request, jsonify, render_template, Response
 from flask_sqlalchemy import SQLAlchemy
 from functools import wraps
+import os
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-
 # ---------- AUTH ----------
-import os
-
 USERNAME = os.getenv("ADMIN_USER", "admin")       
 PASSWORD = os.getenv("ADMIN_PASS", "password123")  
-
 
 def check_auth(username, password):
     return username == USERNAME and password == PASSWORD
@@ -130,52 +127,61 @@ def search():
     } for p in projects])
 
 
-# ---------- SEED DATA ----------
+# ---------- ALWAYS RESEED DATA ----------
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-        if not Profile.query.first():
-            profile = Profile(
-                name="Aryan Singh",
-                email="indianpiear@gmail.com",
-                education="B.Tech Computer Science",
-                skills="Python,JavaScript,Flask,React,SQL",
-                github="https://github.com/PixelBot69",
-                linkedin="https://www.linkedin.com/in/aryan-singh-4b1869249/",
-                portfolio="https://rayvynai.com/"
-            )
-            db.session.add(profile)
-            db.session.add_all([
-        Project(
-            title="Internship Work – Smart Tech Website",
-            description="Developed a smart tech company website during internship.",
-            skills="HTML,CSS,JavaScript,Flask",
-            link="https://github.com/PixelBot69/smart-tech-website"
-        ),
-        Project(
-            title="Game Toxicity Detection",
-            description="Built a BERT-based model to detect toxicity in online game chat.",
-            skills="Python,Transformers,BERT,MachineLearning",
-            link="https://github.com/PixelBot69/gamingtoxicity"
-        ),
-        Project(
-            title="E-commerce App",
-            description="Full-stack e-commerce project with modern stack.",
-            skills="Python,Flask,React,SQL",
-            link="https://github.com/PixelBot69/ecommerce"
-        ),
-        Project(
-            title="Disaster Management System",
-            description="App for reporting and managing disasters effectively.",
-            skills="Python,Django,React,SQLite",
-            link="https://github.com/PixelBot69/Disaster-Management"
-        ),
-        Project(
-            title="SaaS Skill Learning Tool",
-            description="A SaaS platform where people can learn skills for free in the most effective way.",
-            skills="Python,Flask,React,APIs",
-            link="https://github.com/PixelBot69/saas-skill-tool"
+
+        # Clear old data
+        Profile.query.delete()
+        Project.query.delete()
+        db.session.commit()
+
+        # Add fresh profile
+        profile = Profile(
+            name="Aryan Singh",
+            email="indianpiear@gmail.com",
+            education="B.Tech Computer Science",
+            skills="Python,JavaScript,Flask,React,SQL",
+            github="https://github.com/PixelBot69",
+            linkedin="https://www.linkedin.com/in/aryan-singh-4b1869249/",
+            portfolio="https://rayvynai.com/"
         )
-    ])
-            db.session.commit()
-    app.run(host="0.0.0.0", port=8000, debug=True)
+        db.session.add(profile)
+
+        # Add fresh projects
+        db.session.add_all([
+            Project(
+                title="Internship Work – Smart Tech Website",
+                description="Developed a smart tech company website during internship.",
+                skills="HTML,CSS,JavaScript,Flask",
+                link="https://github.com/PixelBot69/smart-tech-website"
+            ),
+            Project(
+                title="Game Toxicity Detection",
+                description="Built a BERT-based model to detect toxicity in online game chat.",
+                skills="Python,Transformers,BERT,MachineLearning",
+                link="https://github.com/PixelBot69/gamingtoxicity"
+            ),
+            Project(
+                title="E-commerce App",
+                description="Full-stack e-commerce project with modern stack.",
+                skills="Python,Flask,React,SQL",
+                link="https://github.com/PixelBot69/ecommerce"
+            ),
+            Project(
+                title="Disaster Management System",
+                description="App for reporting and managing disasters effectively.",
+                skills="Python,Django,React,SQLite",
+                link="https://github.com/PixelBot69/Disaster-Management"
+            ),
+            Project(
+                title="SaaS Skill Learning Tool",
+                description="A SaaS platform where people can learn skills for free in the most effective way.",
+                skills="Python,Flask,React,APIs",
+                link="https://github.com/PixelBot69/saas-skill-tool"
+            )
+        ])
+        db.session.commit()
+
+    app.run(host="0.0.0.0", port=8000, debug=False)
