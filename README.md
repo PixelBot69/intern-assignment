@@ -4,6 +4,14 @@ This is a full-stack mini project built with Flask, SQLite, and standard HTML/JS
 🚀 Live Demo
 You can explore a live demo of the application here: https://intern-assignment-y91g.onrender.com
 
+## 📸 Screenshots
+
+### Profile Page
+![Profile Page](screenshots/img1.png)
+
+### Projects Page
+![Projects Page](screenshots/img2.png)
+
 📂 Features
 REST APIs:
 
@@ -70,7 +78,7 @@ Environment Variables: Set the ADMIN_USER and ADMIN_PASS variables for Basic Aut
 Ini, TOML
 
 ADMIN_USER=aryan
-ADMIN_PASS=MyStrongPass@123
+ADMIN_PASS=yourPassword
 Build Command: pip install -r requirements.txt
 
 Start Command: gunicorn app:app
@@ -122,3 +130,4 @@ LinkedIn: https://www.linkedin.com/in/aryan-singh-4b1869249/
 Portfolio: https://rayvynai.com/
 
 Resume: https://drive.google.com/file/d/1NYhCRMjTyUYkp40pJ7E3Jp9TvaHOnk3e/view?usp=sharing
+
