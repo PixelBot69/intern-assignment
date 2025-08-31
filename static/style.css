@@ -1,0 +1,137 @@
+/* Reset */
+body, h1, h2, h3, p, ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* General */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f9fafc;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+header h1 {
+  font-size: 2.5rem;
+  color: #34495e;
+}
+
+/* Profile Card */
+.profile-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+.profile-card p {
+  margin: 8px 0;
+}
+.profile-card a {
+  color: #0077cc;
+  text-decoration: none;
+}
+.profile-card a:hover {
+  text-decoration: underline;
+}
+
+/* Projects */
+.projects h2 {
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+  color: #2c3e50;
+}
+.search-bar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+.search-bar button {
+  padding: 10px 16px;
+  border: none;
+  background: #0077cc;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.search-bar button:hover {
+  background: #005fa3;
+}
+ul {
+  list-style: none;
+}
+.project-card {
+  background: #fff;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.project-card h3 {
+  margin-bottom: 5px;
+  color: #0077cc;
+}
+.project-card p {
+  margin-bottom: 8px;
+}
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #28a745;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+.btn:hover {
+  background: #218838;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: none;
+  background: #0077cc;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background: #005fa3;
+}
+
+#page-number {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.pagination button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

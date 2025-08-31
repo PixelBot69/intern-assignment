@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Candidate Profile</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>👨‍💻 My Profile</h1>
+    </header>
+
+    <section class="profile-card" id="profile"></section>
+
+    <section class="projects">
+      <h2>📂 Projects</h2>
+      <div class="search-bar">
+        <input type="text" id="search" placeholder="🔍 Search projects by keyword">
+        <button onclick="searchProjects()">Search</button>
+      </div>
+      <ul id="projects"></ul>
+
+      <!-- Pagination controls -->
+      <div class="pagination">
+        <button id="prev-btn" onclick="prevPage()">⬅ Prev</button>
+        <span id="page-number">Page 1</span>
+        <button id="next-btn" onclick="nextPage()">Next ➡</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    let currentPage = 1;
+    const limit = 3;
+    let lastFetchedCount = 0;
+
+    async function loadProfile() {
+      let res = await fetch("/profile");
+      let data = await res.json();
+      document.getElementById("profile").innerHTML = `
+        <p><b>Name:</b> ${data.name}</p>
+        <p><b>Email:</b> <a href="mailto:${data.email}">${data.email}</a></p>
+        <p><b>Education:</b> ${data.education}</p>
+        <p><b>Skills:</b> ${data.skills.join(", ")}</p>
+        <p><b>Links:</b> 
+          <a href="${data.links.github}" target="_blank">GitHub</a> |
+          <a href="${data.links.linkedin}" target="_blank">LinkedIn</a> |
+          <a href="${data.links.portfolio}" target="_blank">Portfolio</a>
+        </p>
+      `;
+    }
+
+    async function loadProjects(page = 1) {
+      currentPage = page;
+      let res = await fetch(`/projects?page=${page}&limit=${limit}`);
+      let data = await res.json();
+      lastFetchedCount = data.length;
+      renderProjects(data);
+      updatePaginationControls();
+      document.getElementById("page-number").innerText = `Page ${page}`;
+    }
+
+    async function searchProjects() {
+      let q = document.getElementById("search").value;
+      let res = await fetch(`/search?q=${q}`);
+      let data = await res.json();
+      renderProjects(data);
+      document.getElementById("page-number").innerText = "Search Results";
+      document.getElementById("prev-btn").disabled = true;
+      document.getElementById("next-btn").disabled = true;
+    }
+
+    function renderProjects(data) {
+      let ul = document.getElementById("projects");
+      ul.innerHTML = "";
+      if (data.length === 0) {
+        ul.innerHTML = "<p>No projects found.</p>";
+        return;
+      }
+      data.forEach(p => {
+        let li = document.createElement("li");
+        li.innerHTML = `
+          <div class="project-card">
+            <h3>${p.title}</h3>
+            <p>${p.description}</p>
+            <p><b>Skills:</b> ${p.skills.join(", ")}</p>
+            <a href="${p.link}" target="_blank" class="btn">🔗 Repo</a>
+          </div>
+        `;
+        ul.appendChild(li);
+      });
+    }
+
+    function updatePaginationControls() {
+      
+      document.getElementById("prev-btn").disabled = currentPage === 1;
+     
+      document.getElementById("next-btn").disabled = lastFetchedCount < limit;
+    }
+
+    function nextPage() {
+      if (lastFetchedCount === limit) {
+        loadProjects(currentPage + 1);
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        loadProjects(currentPage - 1);
+      }
+    }
+
+    loadProfile();
+    loadProjects();
+  </script>
+</body>
+</html>
